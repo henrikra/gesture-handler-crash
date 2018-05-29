@@ -1,29 +1,15 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from "react";
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
-  Animated,
   FlatList,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  Animated
 } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
 
 let idCounter = 0;
 
@@ -33,7 +19,13 @@ export default class App extends Component {
     isLoading: false
   };
 
-  scrollY = new Animated.Value(0);
+  componentDidMount() {
+    // this.setState({isLoading: true}) // uncomment this line to get the app crashing
+  }
+
+  remove = id => {
+    this.setState({ data: this.state.data.filter(lol => lol.id !== id) });
+  };
 
   renderRightAction = (swipeAction, progress, index, paymentMethod) => (
     <Animated.View
@@ -54,11 +46,9 @@ export default class App extends Component {
     >
       <RectButton
         style={[styles.rightAction, { backgroundColor: swipeAction.color }]}
-        onPress={() => null}
+        onPress={() => this.remove(paymentMethod.id)}
       >
-        <Text style={styles.actionText} numberOfLines={1}>
-          {swipeAction.label}
-        </Text>
+        <Text>{swipeAction.label}</Text>
       </RectButton>
     </Animated.View>
   );
@@ -77,15 +67,9 @@ export default class App extends Component {
   keyExtractor = item => item.id.toString();
 
   renderItem = ({ item }) => (
-    <View style={styles.paymentMethodItemWrapper}>
-      <Swipeable renderRightActions={this.createRenderRightActions(item)}>
-        <View style={styles.paymentMethodItem}>
-          <View style={styles.paymentMethodItemInfo}>
-            <Text style={styles.paymentMethodItemName}>Terve {item.id}</Text>
-          </View>
-        </View>
-      </Swipeable>
-    </View>
+    <Swipeable renderRightActions={this.createRenderRightActions(item)}>
+      <Text>Terve {item.id}</Text>
+    </Swipeable>
   );
 
   addMore = () => {
@@ -100,28 +84,16 @@ export default class App extends Component {
   };
 
   render() {
-    const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
         <Button title="Add More" onPress={this.addMore} />
         {this.state.isLoading ? (
           <ActivityIndicator />
         ) : (
-          <AnimatedFlatList
+          <FlatList
             data={this.state.data}
             renderItem={this.renderItem}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: this.scrollY } } }],
-              {
-                useNativeDriver: true
-              }
-            )}
-            scrollEventThrottle={1}
             keyExtractor={this.keyExtractor}
-            style={styles.list}
           />
         )}
       </View>
@@ -136,65 +108,7 @@ const rightActionsWidth = rightActionWidth * swipeActions.length;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  },
-  list: {
-    backgroundColor: "red"
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#ccc"
-  },
-  spinner: {
-    marginTop: 100
-  },
-  paymentMethods: {
-    paddingTop: 70
-  },
-  paymentMethodItemWrapper: {
-    backgroundColor: "#ffffff"
-  },
-  paymentMethodItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15
-  },
-  paymentMethodItemLeftIcon: {
-    marginRight: 15
-  },
-  paymentMethodItemInfo: {
     flex: 1
-  },
-  paymentMethodItemName: {
-    fontSize: 14
-  },
-  separator: {
-    backgroundColor: "#ccc",
-    height: StyleSheet.hairlineWidth
-  },
-  noteAboutProvider: {
-    fontSize: 10,
-    textAlign: "center",
-    padding: 12,
-    color: "#ccc"
-  },
-  addPaymentMethodButton: {
-    position: "absolute",
-    bottom: 15,
-    left: 15,
-    right: 15
   },
   swipeActions: { width: rightActionsWidth, flexDirection: "row" },
   rightAction: {
@@ -202,17 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center"
   },
-  actionText: {
-    backgroundColor: "transparent",
-    padding: 12,
-    color: "#000"
-  },
   rightActionContainer: {
     flex: 1
-  },
-  emptyList: {
-    textAlign: "center",
-    paddingVertical: 15,
-    backgroundColor: "#ffffff"
   }
 });
