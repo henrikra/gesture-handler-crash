@@ -4,28 +4,33 @@ import {
   Text,
   View,
   ActivityIndicator,
+  Animated
 } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 export default class App extends Component {
-  state = {
-    isLoading: false
-  };
+  scrollX = new Animated.Value(0);
 
-  componentDidMount() {
-    // this.setState({isLoading: true}) // uncomment this line to get the app crashing
-  }
+  onPanGestureEvent = ({ nativeEvent }) => {
+    this.scrollX.setValue(nativeEvent.translationX);
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        {this.state.isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <Swipeable renderRightActions={() => null}>
-            <Text>Terve</Text>
-          </Swipeable>
-        )}
+        <PanGestureHandler onGestureEvent={this.onPanGestureEvent}>
+          <View>
+            <Animated.Text
+              style={{
+                transform: [{ translateX: this.scrollX }],
+                backgroundColor: "red"
+              }}
+            >
+              Swipe this to right
+            </Animated.Text>
+          </View>
+        </PanGestureHandler>
       </View>
     );
   }
@@ -34,6 +39,6 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:  50,
+    padding: 50
   },
 });
