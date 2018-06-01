@@ -4151,9 +4151,9 @@ react-is@^16.3.1:
   version "16.4.0"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.4.0.tgz#cc9fdc855ac34d2e7d9d2eb7059bbc240d35ffcf"
 
-react-native-gesture-handler@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-1.0.1.tgz#e76236befe5d35b827a610ce6af427c58c8d2b82"
+react-native-gesture-handler@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-1.0.4.tgz#1cc13eeffe34dcd6fe4f415c05b08823de9c7584"
   dependencies:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
