@@ -12,9 +12,13 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 export default class App extends Component {
   scrollX = new Animated.Value(0);
 
-  onPanGestureEvent = ({ nativeEvent }) => {
+  onPanGestureEvent = ({ nativeEvent }) => { // 1. comment this
     this.scrollX.setValue(nativeEvent.translationX);
   };
+
+  // onPanGestureEvent = Animated.event([{ nativeEvent: { x: this.scrollX } }], {
+  //   useNativeDriver: true
+  // }); // 2. uncomment this to make the app crash on swipe
 
   render() {
     return (
@@ -40,5 +44,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 50
-  },
+  }
 });
